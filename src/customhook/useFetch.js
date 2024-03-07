@@ -13,7 +13,7 @@ const useFetch = (initialData, baseUrl) => {
     fetchUrl(initialData);
   }, []);
 
-  return [data, fetchUrl];
+  return { data, fetchUrl };
 };
 
 export default useFetch;
