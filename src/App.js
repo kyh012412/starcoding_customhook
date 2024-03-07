@@ -1,23 +1,30 @@
+import { useEffect, useState } from 'react';
 import './App.css';
-import { useInput2 } from './customhook/useInput2';
-// import { useInput } from './customhook/useInput';
 
-function displayMessage(message) {
-  alert(message);
-}
+const baseUrl = 'https://jsonplaceholder.typicode.com/';
 
 function App() {
-  const [inputValue, handleChange, handleSubmit] = useInput2(
-    '',
-    displayMessage
-  );
+  const [data, setData] = useState(null);
 
-  console.log('랜더링!');
+  const fetchUrl = (type) => {
+    fetch(baseUrl + '/' + type)
+      .then((res) => res.json())
+      .then((res) => setData(res));
+  };
+
+  useEffect(() => {
+    fetchUrl('users');
+  }, []);
+
+  console.log(data);
+
   return (
     <div>
-      <h1>useInput</h1>
-      <input value={inputValue} onChange={handleChange} />
-      <button onClick={handleSubmit}>확인</button>
+      <h1>useFetch</h1>
+      <button onClick={() => fetchUrl('users')}>Users</button>
+      <button onClick={() => fetchUrl('posts')}>Posts</button>
+      <button onClick={() => fetchUrl('todos')}>Todos</button>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
